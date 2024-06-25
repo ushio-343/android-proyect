@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ejem/screens/main_home.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -54,10 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 Positioned(
                   bottom: 50,
                   right: 50,
-                  child: Icon(
-                    Icons.arrow_forward,
-                    size: 40,
-                    color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => main_center()),
+                      );
+                    },
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 40,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
