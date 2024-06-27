@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart'; // Importa el paquete de material design
 import 'package:flutter_svg/flutter_svg.dart';
 import './register.dart';
+import 'main_home.dart';
 import 'recuperacion.dart';
-import 'Reawards.dart';
 
 void main() {
   runApp(MyApp()); // Ejecuta la aplicación
@@ -96,7 +96,7 @@ class LoginPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ReawardsPage()),
+                            builder: (context) => MainCenter()),
                       );
                     },
                     child: Container(

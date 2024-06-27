@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class RewardsPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Recompensas',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      home: ReawardsPage(),
-    );
-  }
+  _RewardsPageState createState() => _RewardsPageState();
 }
 
-class ReawardsPage extends StatelessWidget {
+class _RewardsPageState extends State<RewardsPage> {
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/main_center');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/task_calendar');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/user_profile');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +43,6 @@ class ReawardsPage extends StatelessWidget {
           children: <Widget>[
             Center(
               child: Text(
-                
                 'Completa desafíos para ganar cupones',
                 style: TextStyle(
                   fontSize: 16,
@@ -83,6 +93,36 @@ class ReawardsPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Tareas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.card_giftcard),
+            label: 'Recompensas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.purple,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
+        showUnselectedLabels: true,
+        selectedIconTheme: IconThemeData(size: 30),
+        unselectedIconTheme: IconThemeData(size: 24),
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+        onTap: _onItemTapped,
       ),
     );
   }

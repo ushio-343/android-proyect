@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ejem/screens/main_home.dart';
+import 'package:ejem/screens/login.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -71,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MainCenter()),
+                        MaterialPageRoute(builder: (context) => LoginPage()),
                       );
                     },
                     child: Icon(

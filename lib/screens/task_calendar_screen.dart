@@ -77,7 +77,7 @@ class _TaskCalendarScreenState extends State<TaskCalendarScreen> {
             SizedBox(height: 20),
             Text(
               'Tarea pendiente',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
             ),
             SizedBox(height: 10),
             _taskCard('Diseñar App Móvil', 'Febrero 3 - 6, 2024', '5:00 PM - 6:00 PM', Colors.purple),

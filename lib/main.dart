@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'screens/task_calendar_screen.dart';
 import 'screens/user_profile_screen.dart';
 import 'screens/main_home.dart';
+import 'screens/Reawards.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/main_center': (context) => MainCenter(),
         '/task_calendar': (context) => TaskCalendarScreen(),
         '/user_profile': (context) => UserProfileScreen(),
+        '/rewards':(context) => RewardsPage()
         // Agrega aquí otras rutas si es necesario
       },
     );
