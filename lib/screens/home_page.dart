@@ -11,13 +11,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 142, 13, 255),
         body: Center(
             child: Column(
           children: <Widget>[
-
             //imagen
             Expanded(
                 flex: 6,
@@ -55,6 +53,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 Positioned(
                   bottom: 50,
                   right: 50,
+
+                  /*child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_forward,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },*/
+
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
