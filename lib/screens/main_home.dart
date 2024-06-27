@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
 
-class main_center extends StatefulWidget {
-  const main_center ({super.key});
+class MainCenter extends StatefulWidget {
+  const MainCenter({super.key});
 
   @override
-  State <main_center> createState() => _main_centerSate();
+  State<MainCenter> createState() => _MainCenterState();
 }
 
-class _main_centerSate extends State<main_center> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'main_center',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeScreen(),
-    );
+class _MainCenterState extends State<MainCenter> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/main_center');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/task_calendar');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/user_profile');
+        break;
+    }
   }
-}
 
-class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +95,7 @@ class HomeScreen extends StatelessWidget {
             label: 'Perfil',
           ),
         ],
+        currentIndex: _selectedIndex,
         selectedItemColor: Colors.purple,
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
@@ -93,6 +104,7 @@ class HomeScreen extends StatelessWidget {
         unselectedIconTheme: IconThemeData(size: 24),
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+        onTap: _onItemTapped,
       ),
     );
   }

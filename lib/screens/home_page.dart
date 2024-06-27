@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => main_center()),
+                        MaterialPageRoute(builder: (context) => MainCenter()),
                       );
                     },
                     child: Icon(
