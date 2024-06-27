@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import './login.dart';
+import 'package:ejem/screens/main_home.dart';
 
-class HomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +53,8 @@ class HomePage extends StatelessWidget {
                 Positioned(
                   bottom: 50,
                   right: 50,
-                  child: IconButton(
+
+                  /*child: IconButton(
                     icon: Icon(
                       Icons.arrow_forward,
                       size: 40,
@@ -57,7 +65,20 @@ class HomePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (context) => LoginPage()),
                       );
+                    },*/
+
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainCenter()),
+                      );
                     },
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 40,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
