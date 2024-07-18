@@ -44,35 +44,96 @@ class _MainCenterState extends State<MainCenter> {
             SizedBox(height: 20),
             Container(
               height: 200,
-              child: Image.asset('assets/ilustracion2.png'),
+              child: Image.asset('assets/ilustracion3.png'),
             ),
             SizedBox(height: 20),
-            Text(
-              'Juan Manuel',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple),
-            ),
-            Text(
-              'Ing. Software',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[300],
+                    child: Icon(Icons.person, size: 30, color: Colors.grey),
+                  ),
+                  SizedBox(width: 12),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Juan manuel',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Ing: Software',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
             SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Total de tareas',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple,
+                  ),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TaskCard('Completado', 10, Colors.green),
-                TaskCard('Pendientes', 5, Colors.purple),
+                TaskCard(
+                  'Pendientes',
+                  5,
+                  Color.fromARGB(255, 143, 54, 233),
+                ),
                 TaskCard('Retrasado', 0, Colors.red),
               ],
             ),
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ProgressCard(45, Colors.green),
-                ProgressCard(45, Colors.purple),
-                ProgressCard(45, Colors.red),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Progreso',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple,
+                  ),
+                ),
+              ),
             ),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                    height: 150,
+                    child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ProgressCard(45, Colors.green),
+                            SizedBox(width: 20),
+                            ProgressCard(45, Color.fromARGB(255, 143, 54, 233)),
+                            SizedBox(width: 20),
+                            ProgressCard(45, Colors.red),
+                          ],
+                        )))),
           ],
         ),
       ),
@@ -96,7 +157,7 @@ class _MainCenterState extends State<MainCenter> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.purple,
+        selectedItemColor: Color.fromARGB(255, 107, 1, 213),
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
         showUnselectedLabels: true,
@@ -122,21 +183,35 @@ class TaskCard extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            '$count',
-            style: TextStyle(fontSize: 24, color: Colors.white),
-          ),
-        ),
-        SizedBox(height: 8),
-        Text(
-          title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
+            padding: EdgeInsets.all(16),
+            height: 120,
+            width: 120,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(height: 15),
+                  Text(
+                    '$count',
+                    style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
+            )),
       ],
     );
   }
@@ -151,21 +226,47 @@ class ProgressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
         Container(
-          width: 80,
-          height: 80,
-          child: CircularProgressIndicator(
-            value: progress / 100,
-            strokeWidth: 8,
-            backgroundColor: color.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(color),
+          width: 130,
+          height: 150,
+          decoration: BoxDecoration(
+            color: Colors.white, // Necesario para que se vea la sombra
+            borderRadius:
+                BorderRadius.circular(10), // Ajusta según sea necesario
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                offset: Offset(0, 0), // Cambia la posición de la sombra
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: 8),
-        Text(
-          '$progress%',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          child: Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 80, // Tamaño del CircularProgressIndicator
+                  height: 80, // Tamaño del CircularProgressIndicator
+                  child: CircularProgressIndicator(
+                    value: progress / 100,
+                    strokeWidth: 8,
+                    backgroundColor: color.withOpacity(0.2),
+                    valueColor: AlwaysStoppedAnimation<Color>(color),
+                  ),
+                ),
+                Text(
+                  '${progress}%',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );

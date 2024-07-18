@@ -33,45 +33,70 @@ class UserProfileScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(16),
-            color: Colors.purple,
-            child: Column(
+            height: 350,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+              color: const Color.fromRGBO(167, 71, 250, 1),
+            ),
+            child: Stack(
               children: <Widget>[
-                CircleAvatar(
-                  radius: 50,
-                  //backgroundImage: AssetImage('assets/profile.png'), // Asegúrate de tener una imagen de perfil en tus assets
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'Juan Manuel',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                          radius: 50,
+                          child: Icon(Icons.person,
+                              size: 50,
+                              color: const Color.fromARGB(255, 0, 0, 0))
+                          //backgroundImage: AssetImage('assets/profile.png'), // Asegúrate de tener una imagen de perfil en tus assets
+                          ),
+                      SizedBox(height: 16),
+                      Text(
+                        'Juan Manuel',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      // El botón se mueve fuera de aquí
+                    ],
                   ),
                 ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    // Lógica para editar el perfil
-                  },
-                  child: Text('Editar perfil'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.deepPurple,
+                Positioned(
+                  top: 0, // Ajusta estos valores según necesites
+                  right: 0, // Ajusta estos valores según necesites
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Editar perfil',
+                        style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 107, 1, 213),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 32),
           Expanded(
-            child: ListView(
-              children: <Widget>[
-                _profileOption(Icons.lock, 'Contraseña'),
-                _profileOption(Icons.email, 'Correo'),
-                _profileOption(Icons.phone, 'Teléfono'),
-                _profileOption(Icons.exit_to_app, 'Cerrar sesión'),
-              ],
-            ),
-          ),
+              child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 6),
+            children: <Widget>[
+              _profileOption(Icons.lock, 'Contraseña'),
+              _profileOption(Icons.email, 'Correo'),
+              _profileOption(Icons.phone, 'Teléfono'),
+              _profileOption(Icons.exit_to_app, 'Cerrar sesión'),
+            ],
+          )),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -94,7 +119,7 @@ class UserProfileScreen extends StatelessWidget {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.purple,
+        selectedItemColor: Color.fromARGB(255, 107, 1, 213),
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
         showUnselectedLabels: true,
@@ -110,7 +135,10 @@ class UserProfileScreen extends StatelessWidget {
   Widget _profileOption(IconData icon, String title) {
     return Card(
       child: ListTile(
-        leading: Icon(icon, color: Colors.purple),
+        leading: Icon(
+          icon,
+          color: Color.fromARGB(255, 107, 1, 213),
+        ),
         title: Text(title),
         trailing: Icon(Icons.arrow_forward_ios),
         onTap: () {

@@ -81,7 +81,7 @@ class RecuperacionPage extends StatelessWidget {
                   SizedBox(height: 24),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(255, 91, 26, 230),
+                        backgroundColor: Color.fromARGB(255, 107, 1, 213),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),

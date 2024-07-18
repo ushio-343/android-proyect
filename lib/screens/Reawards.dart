@@ -114,7 +114,7 @@ class _RewardsPageState extends State<RewardsPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.purple,
+        selectedItemColor: Color.fromARGB(255, 107, 1, 213),
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
         showUnselectedLabels: true,

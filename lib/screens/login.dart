@@ -1,3 +1,4 @@
+import 'package:ejem/screens/task.dart';
 import 'package:flutter/material.dart'; // Importa el paquete de material design
 import 'package:flutter_svg/flutter_svg.dart';
 import './register.dart';
@@ -87,7 +88,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 24),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color.fromARGB(255, 91, 26, 230),
+                      backgroundColor: Color.fromARGB(255, 107, 1, 213),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -95,8 +96,7 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => MainCenter()),
+                        MaterialPageRoute(builder: (context) => MainCenter()),
                       );
                     },
                     child: Container(
