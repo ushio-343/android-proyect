@@ -40,11 +40,11 @@ class _TaskState extends State<Task> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'name': name,
-        'description': description,
-        'date': date,
-        'schedule': shedule,
-        'done': done,
+        "name": name,
+        "description": description,
+        "date": date,
+        "schedule": shedule,
+        "done": done,
       }),
     );
     if (response.statusCode == 200 || response.statusCode == 201) {

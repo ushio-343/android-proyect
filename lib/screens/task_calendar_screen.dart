@@ -53,6 +53,22 @@ class _TaskCalendarScreenState extends State<TaskCalendarScreen> {
     }
   }
 
+  Future<void> _deleteTask(String id) async {
+    try {
+      final response = await http.delete(Uri.parse('http://100.29.86.145:3000/task/$id')); // Cambia esto a la URL de tu API
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _tasks.removeWhere((task) => task['id'] == id);
+        });
+      } else {
+        _showErrorAlertDialog(context, 'Error al eliminar la tarea: ${response.body}');
+      }
+    } catch (e) {
+      _showErrorAlertDialog(context, 'Error de conexión. Inténtalo de nuevo.');
+    }
+  }
+
   void _showErrorAlertDialog(BuildContext context, String content) {
     showDialog(
       context: context,
@@ -71,6 +87,103 @@ class _TaskCalendarScreenState extends State<TaskCalendarScreen> {
         );
       },
     );
+  }
+
+  void _showSearchDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController searchController = TextEditingController();
+        return AlertDialog(
+          title: Text('Buscar Tarea'),
+          content: TextField(
+            controller: searchController,
+            decoration: InputDecoration(hintText: "ID de la tarea"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                String id = searchController.text;
+                Navigator.of(context).pop();
+                // Lógica para buscar la tarea por ID y mostrarla
+                _searchTaskById(id);
+              },
+              child: Text('Buscar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController deleteController = TextEditingController();
+        return AlertDialog(
+          title: Text('Borrar Tarea'),
+          content: TextField(
+            controller: deleteController,
+            decoration: InputDecoration(hintText: "ID de la tarea"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                String id = deleteController.text;
+                Navigator.of(context).pop();
+                // Lógica para borrar la tarea por ID
+                _deleteTask(id);
+              },
+              child: Text('Borrar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _searchTaskById(String id) async {
+    try {
+      final response = await http.get(Uri.parse('http://100.29.86.145:3000/task/$id')); // Cambia esto a la URL de tu API
+
+      if (response.statusCode == 200) {
+        final task = json.decode(response.body);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Tarea Encontrada'),
+              content: Text('Nombre: ${task['name']}\nDescripción: ${task['description']}'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cerrar'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        _showErrorAlertDialog(context, 'Tarea no encontrada.');
+      }
+    } catch (e) {
+      _showErrorAlertDialog(context, 'Error de conexión. Inténtalo de nuevo.');
+    }
   }
 
   void _onItemTapped(int index) {
@@ -112,6 +225,16 @@ class _TaskCalendarScreenState extends State<TaskCalendarScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Calendario de Tareas'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: _showSearchDialog,
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: _showDeleteDialog,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
