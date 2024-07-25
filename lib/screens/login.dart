@@ -54,13 +54,13 @@ class LoginPage extends StatelessWidget {
 
     final String url = 'http://100.29.86.145:3000/user/login';
     print('Requesting: $url');
-    print('Payload: ${json.encode({'email': email, 'password': password})}');
+    print('Payload: ${json.encode({"email": email, "password": password})}');
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode({'email': email, 'password': password}),
+        body: json.encode(<String, dynamic>{"email": email, "password": password}),
       );
 
       print('Response status: ${response.statusCode}');
@@ -69,20 +69,20 @@ class LoginPage extends StatelessWidget {
       if (response.statusCode == 201) {
         final responseBody = json.decode(response.body);
 
-        if (responseBody['success']) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MainCenter()),
+        if (responseBody is Map<String, dynamic>) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainCenter()),
           );
         } else {
           _showErrorAlertDialog(context, 'Correo electrónico o contraseña incorrectos.');
         }
-      } else {
-        _showErrorAlertDialog(context, 'Error de conexión. Inténtalo de nuevo.');
-      }
+        } else {
+          _showErrorAlertDialog(context, 'Respuesta inesperada del servidor.');
+        }
     } catch (e) {
       print('Error: $e');
-      _showErrorAlertDialog(context, 'Error de conexión. Inténtalo de nuevo.');
+      _showErrorAlertDialog(context, 'Error de papu+.');
     }
   }
 

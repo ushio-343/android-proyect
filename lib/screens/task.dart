@@ -49,11 +49,11 @@ class _TaskState extends State<Task> {
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       final newTask = {
-        'name': name,
-        'description': description,
-        'date': date,
-        'schedule': shedule,
-        'done': done == 1,
+        "name": name,
+        "description": description,
+        "date": date,
+        "schedule": shedule,
+        "done": done == 1,
       };
       Navigator.pop(context, newTask);
       ScaffoldMessenger.of(context).showSnackBar(
