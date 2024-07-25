@@ -1,4 +1,23 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Gestión de Tareas',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: MainCenter(),
+    );
+  }
+}
 
 class MainCenter extends StatefulWidget {
   const MainCenter({super.key});
@@ -9,6 +28,17 @@ class MainCenter extends StatefulWidget {
 
 class _MainCenterState extends State<MainCenter> {
   int _selectedIndex = 0;
+
+  Future<List<Task>> _fetchCompletedTasks() async {
+    final response = await http.get(Uri.parse('http://100.29.86.145:3000/task/dones'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> taskJson = json.decode(response.body);
+      return taskJson.map((json) => Task.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load tasks');
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -63,7 +93,7 @@ class _MainCenterState extends State<MainCenter> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Juan manuel',
+                          'Juan Manuel',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -92,17 +122,32 @@ class _MainCenterState extends State<MainCenter> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TaskCard('Completado', 10, Colors.green),
-                TaskCard(
-                  'Pendientes',
-                  5,
-                  Color.fromARGB(255, 143, 54, 233),
-                ),
-                TaskCard('Retrasado', 0, Colors.red),
-              ],
+            FutureBuilder<List<Task>>(
+              future: _fetchCompletedTasks(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TaskCard('Completado', 0, Colors.green),
+                      TaskCard('Pendientes', 5, Color.fromARGB(255, 143, 54, 233)),
+                      TaskCard('Retrasado', 0, Colors.red),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  int completedCount = snapshot.data?.length ?? 0;
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TaskCard('Completado', completedCount, Colors.green),
+                      TaskCard('Pendientes', 5, Color.fromARGB(255, 143, 54, 233)),
+                      TaskCard('Retrasado', 0, Colors.red),
+                    ],
+                  );
+                }
+              },
             ),
             SizedBox(height: 20),
             Padding(
@@ -120,20 +165,23 @@ class _MainCenterState extends State<MainCenter> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                    height: 150,
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ProgressCard(45, Colors.green),
-                            SizedBox(width: 20),
-                            ProgressCard(45, Color.fromARGB(255, 143, 54, 233)),
-                            SizedBox(width: 20),
-                            ProgressCard(45, Colors.red),
-                          ],
-                        )))),
+              padding: EdgeInsets.all(10),
+              child: Container(
+                height: 150,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ProgressCard(45, Colors.green),
+                      SizedBox(width: 20),
+                      ProgressCard(45, Color.fromARGB(255, 143, 54, 233)),
+                      SizedBox(width: 20),
+                      ProgressCard(45, Colors.red),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -171,6 +219,35 @@ class _MainCenterState extends State<MainCenter> {
   }
 }
 
+class Task {
+  final int id;
+  final String name;
+  final String description;
+  final String date;
+  final String schedule;
+  final bool done;
+
+  Task({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.date,
+    required this.schedule,
+    required this.done,
+  });
+
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      id: json['id_task'],
+      name: json['name'],
+      description: json['description'],
+      date: json['date'],
+      schedule: json['schedule'],
+      done: json['done'],
+    );
+  }
+}
+
 class TaskCard extends StatelessWidget {
   final String title;
   final int count;
@@ -183,35 +260,36 @@ class TaskCard extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-            padding: EdgeInsets.all(16),
-            height: 120,
-            width: 120,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(8),
+          padding: EdgeInsets.all(16),
+          height: 120,
+          width: 120,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                SizedBox(height: 15),
+                Text(
+                  '$count',
+                  style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ],
             ),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  SizedBox(height: 15),
-                  Text(
-                    '$count',
-                    style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-            )),
+          ),
+        ),
       ],
     );
   }
@@ -232,13 +310,12 @@ class ProgressCard extends StatelessWidget {
           width: 130,
           height: 150,
           decoration: BoxDecoration(
-            color: Colors.white, // Necesario para que se vea la sombra
-            borderRadius:
-                BorderRadius.circular(10), // Ajusta según sea necesario
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.1),
-                offset: Offset(0, 0), // Cambia la posición de la sombra
+                offset: Offset(0, 0),
               ),
             ],
           ),
@@ -247,8 +324,8 @@ class ProgressCard extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 SizedBox(
-                  width: 80, // Tamaño del CircularProgressIndicator
-                  height: 80, // Tamaño del CircularProgressIndicator
+                  width: 80,
+                  height: 80,
                   child: CircularProgressIndicator(
                     value: progress / 100,
                     strokeWidth: 8,
